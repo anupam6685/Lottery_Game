@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lucky Draw for Meal Work</title>
+
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: #fff;
+      }
+
+      h1 {
+        margin-bottom: 8px;
+        letter-spacing: 1px;
+      }
+
+      .subtitle {
+        margin-bottom: 20px;
+        font-size: 14px;
+        opacity: 0.85;
+      }
+
+      .game {
+        display: grid;
+        grid-template-columns: repeat(4, 110px);
+        gap: 18px;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .card {
+        width: 110px;
+        height: 110px;
+        background: linear-gradient(135deg, #ff512f, #dd2476);
+        color: white;
+        font-size: 36px;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 12px;
+        user-select: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .card.revealed {
+        background: linear-gradient(135deg, #00b09b, #96c93d);
+        cursor: default;
+        transform: none;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 10px 25px;
+        font-size: 14px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        background: #ffcc00;
+        color: #333;
+        font-weight: bold;
+      }
+
+      button:hover {
+        background: #ffd633;
+      }
+
+      footer {
+        margin-top: 10px;
+        font-size: 12px;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>🍽️ Lucky Draw for Meal Work</h1>
+    <div class="subtitle">Pick a card to decide today’s duty</div>
+
+    <div class="game" id="game"></div>
+
+    <button onclick="resetGame()">New Draw</button>
+
+    <footer>All selected cards remain visible</footer>
+
+    <script>
+      const game = document.getElementById("game");
+
+      function createGame() {
+        game.innerHTML = "";
+
+        let numbers = [1, 2, 3, 4, 5, 6, 7, 8];
+        numbers.sort(() => Math.random() - 0.5);
+
+        numbers.forEach((num) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.textContent = "?";
+
+          card.onclick = () => {
+            if (!card.classList.contains("revealed")) {
+              card.textContent = num;
+              card.classList.add("revealed");
+            }
+          };
+
+          game.appendChild(card);
+        });
+      }
+
+      function resetGame() {
+        createGame();
+      }
+
+      createGame();
+    </script>
+  </body>
+</html>
