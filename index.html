@@ -2,60 +2,70 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Lucky Draw Lottery Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🍽️ Lucky Draw Lottery Game</title>
+
     <style>
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
       body {
+        margin: 0;
+        min-height: 100vh;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         background: linear-gradient(135deg, #1e3c72, #2a5298);
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
-        min-height: 100vh;
-        margin: 0;
-        padding: 12px;
         color: #fff;
       }
 
-      h1 {
-        margin-bottom: 6px;
-        letter-spacing: 0.5px;
-        font-size: 1.4rem;
+      .app {
+        width: 100%;
+        max-width: 420px; /* Ideal mobile width */
+        padding: 20px;
         text-align: center;
+      }
+
+      h1 {
+        font-size: 22px;
+        margin-bottom: 6px;
       }
 
       .subtitle {
-        margin-bottom: 16px;
-        font-size: 0.85rem;
+        font-size: 14px;
         opacity: 0.85;
-        text-align: center;
+        margin-bottom: 18px;
       }
 
       .game {
+        width: 100%;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
+        gap: 14px;
         background: rgba(255, 255, 255, 0.15);
-        padding: 16px;
-        border-radius: 14px;
-        width: 100%;
-        max-width: 360px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        padding: 18px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
       }
 
       .card {
         aspect-ratio: 1 / 1;
+        width: 100%;
         background: linear-gradient(135deg, #ff512f, #dd2476);
         color: white;
-        font-size: 1.8rem;
+        font-size: 30px;
         font-weight: bold;
         display: flex;
         justify-content: center;
         align-items: center;
+        border-radius: 14px;
         cursor: pointer;
-        border-radius: 12px;
         user-select: none;
         transition: transform 0.15s ease, box-shadow 0.15s ease;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
       }
 
       .card:active {
@@ -65,78 +75,82 @@
       .card.revealed {
         background: linear-gradient(135deg, #00b09b, #96c93d);
         cursor: default;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.35);
       }
 
       button {
-        margin-top: 16px;
-        padding: 12px 28px;
-        font-size: 0.9rem;
+        margin-top: 20px;
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
         border: none;
-        border-radius: 24px;
-        cursor: pointer;
+        border-radius: 30px;
         background: #ffcc00;
         color: #333;
         font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
       }
 
       button:active {
-        transform: scale(0.96);
+        transform: scale(0.97);
       }
 
       footer {
-        margin-top: 8px;
-        font-size: 0.75rem;
+        margin-top: 12px;
+        font-size: 12px;
         opacity: 0.7;
-        text-align: center;
-      }
-
-      /* Tablet & larger screens */
-      @media (min-width: 600px) {
-        h1 {
-          font-size: 1.6rem;
-        }
-        .game {
-          max-width: 420px;
-        }
-        .card {
-          font-size: 2rem;
-        }
       }
     </style>
   </head>
+
   <body>
-    <h1>🎯 Lucky Draw Lottery Game</h1>
-    <div class="subtitle">Pick a card and test your luck!</div>
+    <div class="app">
+      <h1>🍽️ Lucky Draw for Meal Work</h1>
+      <div class="subtitle">Tap a card to reveal your duty</div>
 
-    <div class="game" id="game"></div>
+      <div class="game" id="game"></div>
 
-    <footer>Refresh the page to play a new lottery</footer>
+      <button onclick="resetGame()">New Draw</button>
+
+      <footer>All selected cards stay visible</footer>
+    </div>
 
     <script>
       const game = document.getElementById("game");
 
-      // Create numbers 1 to 8
-      let numbers = [1, 2, 3, 4, 5, 6, 7, 8];
+      function createGame() {
+        game.innerHTML = "";
 
-      // Shuffle numbers (Lottery style)
-      numbers.sort(() => Math.random() - 0.5);
+        let numbers = [1, 2, 3, 4, 5, 6, 7, 8];
+        numbers.sort(() => Math.random() - 0.5);
 
-      // Create cards
-      numbers.forEach((num) => {
-        const card = document.createElement("div");
-        card.classList.add("card");
-        card.textContent = "?";
+        numbers.forEach((num) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.textContent = "?";
 
-        card.addEventListener("click", () => {
-          if (!card.classList.contains("revealed")) {
-            card.textContent = num;
-            card.classList.add("revealed");
-          }
+          card.addEventListener("click", () => {
+            if (!card.classList.contains("revealed")) {
+              card.textContent = num;
+              card.classList.add("revealed");
+
+              // Mobile vibration feedback (if supported)
+              if (navigator.vibrate) {
+                navigator.vibrate(60);
+              }
+            }
+          });
+
+          game.appendChild(card);
         });
+      }
 
-        game.appendChild(card);
-      });
+      function resetGame() {
+        createGame();
+      }
+
+      createGame();
     </script>
   </body>
 </html>
